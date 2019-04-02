@@ -1,0 +1,296 @@
+#include<stdio.h>
+#include<math.h>
+
+
+float axb(float a[10][11], int q)
+{
+	float x[10];
+	int k = 0;
+	int i = 0;
+	int j = 0;
+	for (k = 0; k <= 9; k++)
+	{
+		x[k] = 0;
+		for (i = k + 1; i <= 9; i++)
+		{
+			if (a[i][k] != 0)
+			{
+				float p = a[i][k] / a[k][k];
+				for (j = k; j <= 10; j++)
+				{
+					a[i][j] = a[i][j] - p*a[k][j];
+				}
+			}
+		}
+	}
+	x[9] = a[9][10] / a[9][9];
+	for (i = 8; i >= 0; i--)
+	{
+		for (j = i+1; j <= 9; j++)
+		{
+			x[i] = a[i][10] - a[i][j] * x[j];
+		}
+		x[i] = x[i] / a[i][i];
+	}
+	return x[q];
+}
+
+float jingque(float x[10], double u, int q)
+{
+	float jing[10];
+	int i = 0;
+	for (i = 0; i <= 9; i++)
+	{
+		jing[i] = 1 - (exp(u*x[i] / 0.1) - 1) / (exp(u * 1 / 0.1) - 1);
+	}
+	return jing[q];
+}
+
+float zxcf(float u, int p, int q)
+{
+	float aw;
+	float ap;
+	float ae;
+	float b;
+	float a[10][11];
+	int i = 0;
+	int j = 0;
+	float dx = 0.1;
+	float FF = u;
+	float DD = 0.1 / dx;
+	for (i = 0; i <= 9; i++)
+	{
+		a[i][10] = 0;
+		for (j = 0; j <= 9; j++)
+		{
+			a[i][j] = 0;
+		}
+	}
+	i = 0; j = 0;
+	ap = FF / 2 + 2 * DD;
+	aw = 0;
+	ae = DD - FF / 2;
+	b = (FF + DD * 2) * 1;
+	a[0][0] = ap;
+	a[0][1] = -ae;
+	a[0][10] = b;
+	ap = 3 * DD - FF / 2;
+	ae = 0;
+	aw = DD + FF / 2;
+	b = 0;
+	a[9][9] = ap;
+	a[9][8] = -aw;
+	a[9][10] = b;
+	for (i = 1; i <= 8; i++)
+	{
+		ae = DD - FF / 2;
+		a[i][i + 1] = -ae;
+		aw = DD + FF / 2;
+		a[i][i - 1] = -aw;
+		ap = ae + aw;
+		a[i][i] = ap;
+		b = 0;
+		a[i][10] = b;
+	}
+	return a[p][q];
+}
+
+float sf(float u, int p, int q)
+{
+	float aw;
+	float ap;
+	float ae;
+	float b;
+	float a[10][11];
+	int i = 0;
+	int j = 0;
+	float dx = 0.1;
+	float FF = u;
+	float DD = 0.1 / dx;
+	for (i = 0; i <= 9; i++)
+	{
+		a[i][10] = 0;
+		for (j = 0; j <= 9; j++)
+		{
+			a[i][j] = 0;
+		}
+	}
+	for (i = 1; i <= 8; i++)
+	{
+		ae = DD;
+		aw = DD + FF;
+		ap = ae + aw;
+		b = 0;
+		a[i][i] = ap;
+		a[i][i - 1] = -aw;
+		a[i][i + 1] = -ae;
+		a[i][10] = b;
+	}
+	ae = DD;
+	aw = 0;
+	ap = ae + aw + 2 * DD + FF;
+	b = 2 * DD + FF;
+	a[0][0] = ap;
+	a[0][1] = -ae;
+	a[0][10] = b;
+	ae = 0;
+	aw = DD + FF;
+	ap = aw + ae + 2 * DD;
+	b = 0;
+	a[9][9] = ap;
+	a[9][8] = -aw;
+	a[9][10] = b;
+
+	return a[p][q];
+}
+
+float hun(float u, int p, int q)
+{
+	//P大于2
+	float aw;
+	float ap;
+	float ae;
+	float b;
+	float a[10][11];
+	int i = 0;
+	int j = 0;
+	float dx = 0.1;
+	float FF = u;
+	float DD = 0.1 / dx;
+	float m1 = 0;
+
+	for (i = 0; i <= 9; i++)
+	{
+		a[i][10] = 0;
+		for (j = 0; j <= 9; j++)
+		{
+			a[i][j] = 0;
+		}
+	}
+	for (i = 1; i <= 8; i++)
+	{
+		if (-FF > m1)
+		{
+			m1 = -FF;
+		}
+		if (DD - FF / 2 > m1)
+		{
+			m1 = DD - FF / 2;
+		}
+		ae = m1;
+		m1 = 0;
+		if (FF > m1)
+		{
+			m1 = FF;
+		}
+		if (DD + FF / 2 > m1)
+		{
+			m1 = DD + FF / 2;
+		}
+		aw = m1;
+		ap = ae + aw;
+		a[i][i] = ap;
+		a[i][i - 1] = -aw;
+		a[i][i + 1] = -ae;
+	}
+	ae = 0;
+	aw = 0;
+	b = 2 * DD + FF;
+	ap = ae + aw + 2 * DD + FF;
+	a[0][0] = ap;
+	a[0][1] = -ae;
+	a[0][10] = b;
+	ae = 0;
+	aw = FF;
+	ap = ae + aw + 2 * DD;
+	b = 0;
+	a[9][9] = ap;
+	a[9][8] = -aw;
+
+	return a[p][q];
+}
+
+int main()
+
+{
+	//u=0.1时情况
+	float a[10][11];//系数矩阵
+	float u = 2.5;
+	float xzxcf[10];//中心差分解
+	float xsf[10];//上风解
+	float xhun[10];//混合值解
+	float xjq[10];//精确解
+	float x[10];//距离
+	int i = 0;
+	int j = 0;
+	for (i = 0; i <= 9; i++)
+	{
+		x[i] = 0.05 + i*0.1;
+		xzxcf[i] = 0;
+		xsf[i] = 0;
+		xhun[i] = 0;
+	}
+	printf("精确结果：\n");
+	for (i = 0; i <= 9; i++)
+	{
+		xjq[i] = jingque(x, u, i);
+		printf("%f  ", xjq[i]);
+	}
+	printf("\n");
+
+	//中心差分求解
+	printf("中心差分矩阵\n");
+	for (i = 0; i <= 9; i++)
+	{
+		for (j = 0; j <= 10; j++)
+		{
+			a[i][j] = zxcf(u, i, j);
+			printf("%f  ", a[i][j]);
+		}
+		printf("\n");
+	}
+	printf("中心差分结果：\n");
+	for (i = 0; i <= 9; i++)
+	{
+		xzxcf[i] = axb(a, i);
+		printf("%f  ", xzxcf[i]);
+	}
+	printf("\n");
+	//上风求解
+	printf("上风矩阵\n");
+	for (i = 0; i <= 9; i++)
+	{
+		for (j = 0; j <= 10; j++)
+		{
+			a[i][j] = sf(u, i, j);
+			printf("%f  ", a[i][j]);
+		}
+		printf("\n");
+	}
+	printf("上风结果：\n");
+	for (i = 0; i <= 9; i++)
+	{
+		xsf[i] = axb(a, i);
+		printf("%f  ", xsf[i]);
+	}
+	printf("\n");
+	//混合解
+	printf("混合矩阵：\n");
+	for (i = 0; i <= 9; i++)
+	{
+		for (j = 0; j <= 10; j++)
+		{
+			a[i][j] = hun(u, i, j);
+			printf("%f  ", a[i][j]);
+		}
+		printf("\n");
+	}
+	printf("混合结果：\n");
+	for (i = 0; i <= 9; i++)
+	{
+		xhun[i] = axb(a, i);
+		printf("%f  ", xhun[i]);
+	}
+	printf("\n");
+	return 0;
+}
