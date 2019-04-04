@@ -1,0 +1,293 @@
+#include<stdio.h>
+#include<math.h>
+
+double jingque(double x[10], double u, int q)
+{
+	double jing[10];
+	int i = 0;
+	for (i = 0; i <= 9; i++)
+	{
+		jing[i] = 1 - (exp(u*x[i] / 0.1) - 1) / (exp(u * 1 / 0.1) - 1);
+	}
+	return jing[q];
+}
+
+double zxcf(double u, int p)
+{
+	int time = 1;
+	double fi[12];
+	double fi1[12];
+	double aw;
+	double ap;
+	double ae;
+	double b;
+	int i = 0;
+	double chazhi;
+	double wucha = 1.0;
+	double dx = 0.1;
+	double FF = u;
+	double DD = 0.1 / dx;
+	fi[0] = 1; fi1[0] = 1;
+	fi[11] = 0; fi1[11] = 0;
+	for (i = 1; i <= 10; i++)
+	{
+		fi[i] = 0;//本次计算的值
+		fi1[i] = 0;//上一次值
+	}
+ 
+	while (wucha > 0.01)
+	{
+		time = time + 1;
+		for (i = 1; i <= 10; i++)
+		{
+			fi1[i] = fi[i];
+		}
+		for (i = 1; i <= 10; i++)
+		{
+			if (i == 1)
+			{
+				aw = 0;
+				ae = DD - FF / 2;
+				b = (FF + DD * 2) * 1;
+				ap = ae + aw + 2 * DD + FF;
+				fi[i] = (aw*fi1[i-1]+ae*fi1[i + 1] + b) / ap;
+			}
+			if (i == 10)
+			{
+				ae = 0;
+				aw = DD + FF / 2;
+				b = 0;
+				ap = ae + aw + 2 * DD - FF;
+				fi[i] = (aw*fi1[i - 1]+ae*fi1[i+1] + b) / ap;
+			}
+			if (i != 1 && i != 10)
+			{
+				ae = DD - FF / 2;
+				aw = DD + FF / 2;
+				ap = ae + aw;
+				b = 0;
+				fi[i] = (aw*fi1[i - 1] + ae*fi1[i + 1]) / ap;
+			}
+		}
+		wucha = 0;
+		for (i = 1; i <=10; i++)
+		{
+			if (fi[i] - fi1[i]>0)
+			{
+				chazhi = fi[i] - fi1[i];
+			}
+			else{ chazhi = -fi[i] + fi1[i]; }
+			if (wucha <= chazhi)
+			{
+				wucha = chazhi;
+			}
+		}
+	}
+	
+	return fi[p];
+}
+
+double sf(double u, int p)
+{
+	double fi[12];
+	double fi1[12];
+	double aw;
+	double ap;
+	double ae;
+	double b;
+	double chazhi;
+	int i = 0;
+	double wucha = 1;
+	double dx = 0.1;
+	double FF = u;
+	double DD = 0.1 / dx;
+	fi[0] = 1; fi1[0] = 1;
+	fi[11] = 0; fi1[11] = 0;
+	for (i = 1; i <= 10; i++)
+	{
+		fi[i] = 0;//本次计算的值
+		fi1[i] = 0;//上一次值
+	}
+
+	while (wucha > 0.01)
+	{
+		for (i = 1; i <= 10; i++)
+		{
+			fi1[i] = fi[i];
+		}
+		for (i = 1; i <= 10; i++)
+		{
+			if (i == 1)
+			{
+				ae = DD;
+				aw = 0;
+				ap = ae + aw + 2 * DD + FF;
+				b = 2 * DD + FF;
+				fi[i] = (aw*fi1[i-1]+ae*fi1[i + 1] + b) / ap;
+			}
+			if (i == 10)
+			{
+				ae = 0;
+				aw = DD + FF;
+				ap = aw + ae + 2 * DD;
+				b = 0;
+				fi[i] = (ae*fi1[i+1]+aw*fi1[i - 1] + b) / ap;
+			}
+			if (i != 1 && i != 10)
+			{
+				ae = DD;
+				aw = DD + FF;
+				ap = ae + aw;
+				b = 0;
+				fi[i] = (aw*fi1[i - 1] + ae*fi1[i + 1]) / ap;
+			}
+		}
+		wucha = 0;
+		for (i = 1; i <=10; i++)
+		{
+			if (fi[i] - fi1[i]>0)
+			{
+				chazhi = fi[i] - fi1[i];
+			}
+			else{ chazhi = -fi[i] + fi1[i]; }
+			if (wucha <= chazhi)
+			{
+				wucha = chazhi;
+			}
+		}
+	}
+
+	return fi[p];
+}
+
+double hun(double u, int p)
+{
+	double fi[12];
+	double fi1[12];
+	double aw;
+	double ap;
+	double ae;
+	double b;
+	int i = 0;
+	double m1;
+	double chazhi;
+	double wucha;
+	double dx;
+	double FF;
+	double DD;
+	m1 = 0;
+	dx = 0.1;
+	wucha = 1;
+	FF = u;
+	DD = 0.1 / dx;
+	fi[0] = 1; fi1[0] = 1;
+	fi[11] = 0; fi1[11] = 0;
+	for (i = 1; i <= 10; i++)
+	{
+		fi[i] = 0;//本次计算的值
+		fi1[i] = 0;//上一次值
+	}
+
+	while (wucha > 0.01)
+	{
+		for (i = 1; i <= 10; i++)
+		{
+			fi1[i] = fi[i];
+		}
+		for (i = 1; i <= 10; i++)
+		{
+			if (i == 1)
+			{
+				ae = 0;
+				aw = 0;
+				b = 2 * DD + FF;
+				ap = ae + aw + 2 * DD + FF;
+				fi[i] = (ae*fi1[i + 1] + b) / ap;
+			}
+			if (i == 10)
+			{
+				ae = 0;
+				aw = FF;
+				ap = ae + aw + 2 * DD;
+				b = 0;
+				fi[i] = (aw*fi1[i - 1] + b) / ap;
+			}
+			if (i != 1 && i != 10)
+			{
+				ae = fmax(-FF,DD-FF/2,0);
+				aw = fmax(FF,DD+FF/2,0);
+				ap = ae + aw;
+				fi[i] = (aw*fi1[i - 1] + ae*fi1[i + 1]) / ap;
+			}
+		}
+		wucha = 0;
+		for (i = 1; i <=10; i++)
+		{
+			if (fi[i] - fi1[i]>0)
+			{
+				chazhi = fi[i] - fi1[i];
+			}
+			else{ chazhi = -fi[i] + fi1[i]; }
+			if (wucha <= chazhi)
+			{
+				wucha = chazhi;
+			}
+		}
+	}
+
+	return fi[p];
+}
+
+int main()
+
+{
+	//u=0.1时情况
+	double u = 0.1;
+	double xzxcf[10];//中心差分解
+	double xsf[10];//上风解
+	double xhun[10];//混合值解
+	double xjq[10];//精确解
+	double x[10];//距离
+	int i = 0;
+	int j = 0;
+	for (i = 0; i <= 9; i++)
+	{
+		x[i] = 0.05 + i*0.1;
+		xzxcf[i] = 0;
+		xsf[i] = 0;
+		xhun[i] = 0;
+	}
+	printf("精确结果：\n");
+	for (i = 0; i <= 9; i++)
+	{
+		xjq[i] = jingque(x, u, i);
+		printf("%f  ", xjq[i]);
+	}
+	printf("\n");
+
+	//中心差分求解
+	printf("中心差分结果：\n");
+	for (i = 0; i <= 9; i++)
+	{
+		xzxcf[i] = zxcf(u, i + 1);
+		printf("%f  ", xzxcf[i]);
+	}
+	printf("\n");
+	//上风求解
+	printf("上风结果：\n");
+	for (i = 0; i <= 9; i++)
+	{
+		xsf[i] = sf(u,i+1);
+		printf("%f  ", xsf[i]);
+	}
+	printf("\n");
+	//混合解
+	printf("混合结果：\n");
+	for (i = 0; i <= 9; i++)
+	{
+		xhun[i] = hun(u,i+1);
+		printf("%f  ", xhun[i]);
+	}
+	printf("\n");
+	return 0;
+}
